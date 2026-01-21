@@ -226,7 +226,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1544, 912.0]
+    coordinate: [1544, 792.0]
     rotation: 0
     state: enabled
 - name: blocks_complex_to_mag_0
@@ -242,7 +242,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1856, 672.0]
+    coordinate: [1864, 792.0]
     rotation: 0
     state: enabled
 - name: blocks_float_to_complex_0
@@ -261,38 +261,6 @@ blocks:
     coordinate: [400, 400.0]
     rotation: 0
     state: enabled
-- name: blocks_float_to_complex_1
-  id: blocks_float_to_complex
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1720, 896.0]
-    rotation: 0
-    state: enabled
-- name: blocks_float_to_complex_1_0
-  id: blocks_float_to_complex
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1720, 984.0]
-    rotation: 0
-    state: enabled
 - name: blocks_float_to_complex_2
   id: blocks_float_to_complex
   parameters:
@@ -306,7 +274,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2032, 672.0]
+    coordinate: [2024, 792.0]
     rotation: 0
     state: enabled
 - name: blocks_multiply_const_vxx_0
@@ -325,24 +293,6 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [920, 672.0]
-    rotation: 0
-    state: enabled
-- name: blocks_multiply_const_vxx_0_0
-  id: blocks_multiply_const_vxx
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    const: 1j
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    type: complex
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1872, 992.0]
     rotation: 0
     state: enabled
 - name: blocks_selector_0
@@ -387,6 +337,24 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [1064, 632.0]
+    rotation: 0
+    state: enabled
+- name: hilbert_fc_0
+  id: hilbert_fc
+  parameters:
+    affinity: ''
+    alias: ''
+    beta: '6.76'
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_taps: '512'
+    win: window.WIN_HAMMING
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1704, 784.0]
     rotation: 0
     state: enabled
 - name: iio_pluto_sink_0
@@ -560,7 +528,7 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
     name: '""'
-    nconnections: '3'
+    nconnections: '1'
     norm_window: 'False'
     showports: 'False'
     tr_chan: '0'
@@ -587,7 +555,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2224, 784.0]
+    coordinate: [1544, 488.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_0
@@ -766,7 +734,7 @@ blocks:
     width1: '1'
     width10: '1'
     width2: '1'
-    width3: '1'
+    width3: '3'
     width4: '1'
     width5: '1'
     width6: '1'
@@ -781,7 +749,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2224, 544.0]
+    coordinate: [2432, 680.0]
     rotation: 0
     state: enabled
 - name: rational_resampler_xxx_0
@@ -852,20 +820,16 @@ blocks:
 connections:
 - [analog_sig_source_x_0, '0', blocks_complex_to_float_0, '0']
 - [blocks_complex_to_float_0, '0', blocks_float_to_complex_0, '0']
-- [blocks_complex_to_float_1, '0', blocks_float_to_complex_1, '0']
-- [blocks_complex_to_float_1, '1', blocks_float_to_complex_1_0, '0']
+- [blocks_complex_to_float_1, '0', hilbert_fc_0, '0']
 - [blocks_complex_to_mag_0, '0', blocks_float_to_complex_2, '0']
 - [blocks_float_to_complex_0, '0', rational_resampler_xxx_0, '0']
-- [blocks_float_to_complex_1, '0', blocks_complex_to_mag_0, '0']
-- [blocks_float_to_complex_1, '0', qtgui_freq_sink_x_0_0, '1']
-- [blocks_float_to_complex_1_0, '0', blocks_multiply_const_vxx_0_0, '0']
 - [blocks_float_to_complex_2, '0', qtgui_time_sink_x_0_0, '1']
 - [blocks_multiply_const_vxx_0, '0', channels_channel_model_0, '0']
-- [blocks_multiply_const_vxx_0_0, '0', qtgui_freq_sink_x_0_0, '2']
 - [blocks_selector_0, '0', blocks_complex_to_float_1, '0']
 - [blocks_selector_0, '0', qtgui_freq_sink_x_0_0, '0']
 - [blocks_selector_0, '0', qtgui_time_sink_x_0_0, '0']
 - [channels_channel_model_0, '0', blocks_selector_0, '0']
+- [hilbert_fc_0, '0', blocks_complex_to_mag_0, '0']
 - [rational_resampler_xxx_0, '0', iio_pluto_sink_0, '0']
 - [rational_resampler_xxx_0, '0', qtgui_freq_sink_x_0, '0']
 - [rational_resampler_xxx_0, '0', qtgui_time_sink_x_0, '0']

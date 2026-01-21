@@ -33,6 +33,27 @@ options:
     state: enabled
 
 blocks:
+- name: filter_freq
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: "Cz\u0119stotliwo\u015B\u0107 filtru"
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '1000'
+    step: '1'
+    stop: '100000'
+    value: '1000'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2224, 560.0]
+    rotation: 0
+    state: enabled
 - name: rx_samp_rate
   id: variable
   parameters:
@@ -226,7 +247,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1544, 912.0]
+    coordinate: [1544, 792.0]
     rotation: 0
     state: enabled
 - name: blocks_complex_to_mag_0
@@ -242,7 +263,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1856, 672.0]
+    coordinate: [1896, 808.0]
     rotation: 0
     state: enabled
 - name: blocks_float_to_complex_0
@@ -274,23 +295,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1720, 896.0]
-    rotation: 0
-    state: enabled
-- name: blocks_float_to_complex_1_0
-  id: blocks_float_to_complex
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1720, 984.0]
+    coordinate: [1720, 792.0]
     rotation: 0
     state: enabled
 - name: blocks_float_to_complex_2
@@ -306,7 +311,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2032, 672.0]
+    coordinate: [2056, 808.0]
     rotation: 0
     state: enabled
 - name: blocks_multiply_const_vxx_0
@@ -325,24 +330,6 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [920, 672.0]
-    rotation: 0
-    state: enabled
-- name: blocks_multiply_const_vxx_0_0
-  id: blocks_multiply_const_vxx
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    const: 1j
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    type: complex
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1872, 992.0]
     rotation: 0
     state: enabled
 - name: blocks_selector_0
@@ -426,6 +413,30 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [8, 104.0]
+    rotation: 0
+    state: enabled
+- name: low_pass_filter_0
+  id: low_pass_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    beta: '6.76'
+    comment: ''
+    cutoff_freq: filter_freq
+    decim: '1'
+    gain: '1'
+    interp: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_rate: rx_samp_rate
+    type: fir_filter_ccf
+    width: filter_freq
+    win: window.WIN_HAMMING
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2224, 776.0]
     rotation: 0
     state: enabled
 - name: qtgui_freq_sink_x_0
@@ -560,7 +571,7 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
     name: '""'
-    nconnections: '3'
+    nconnections: '1'
     norm_window: 'False'
     showports: 'False'
     tr_chan: '0'
@@ -587,7 +598,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2224, 784.0]
+    coordinate: [1544, 488.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_0
@@ -766,7 +777,7 @@ blocks:
     width1: '1'
     width10: '1'
     width2: '1'
-    width3: '1'
+    width3: '3'
     width4: '1'
     width5: '1'
     width6: '1'
@@ -781,7 +792,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2224, 544.0]
+    coordinate: [2432, 680.0]
     rotation: 0
     state: enabled
 - name: rational_resampler_xxx_0
@@ -853,19 +864,16 @@ connections:
 - [analog_sig_source_x_0, '0', blocks_complex_to_float_0, '0']
 - [blocks_complex_to_float_0, '0', blocks_float_to_complex_0, '0']
 - [blocks_complex_to_float_1, '0', blocks_float_to_complex_1, '0']
-- [blocks_complex_to_float_1, '1', blocks_float_to_complex_1_0, '0']
 - [blocks_complex_to_mag_0, '0', blocks_float_to_complex_2, '0']
 - [blocks_float_to_complex_0, '0', rational_resampler_xxx_0, '0']
 - [blocks_float_to_complex_1, '0', blocks_complex_to_mag_0, '0']
-- [blocks_float_to_complex_1, '0', qtgui_freq_sink_x_0_0, '1']
-- [blocks_float_to_complex_1_0, '0', blocks_multiply_const_vxx_0_0, '0']
-- [blocks_float_to_complex_2, '0', qtgui_time_sink_x_0_0, '1']
+- [blocks_float_to_complex_2, '0', low_pass_filter_0, '0']
 - [blocks_multiply_const_vxx_0, '0', channels_channel_model_0, '0']
-- [blocks_multiply_const_vxx_0_0, '0', qtgui_freq_sink_x_0_0, '2']
 - [blocks_selector_0, '0', blocks_complex_to_float_1, '0']
 - [blocks_selector_0, '0', qtgui_freq_sink_x_0_0, '0']
 - [blocks_selector_0, '0', qtgui_time_sink_x_0_0, '0']
 - [channels_channel_model_0, '0', blocks_selector_0, '0']
+- [low_pass_filter_0, '0', qtgui_time_sink_x_0_0, '1']
 - [rational_resampler_xxx_0, '0', iio_pluto_sink_0, '0']
 - [rational_resampler_xxx_0, '0', qtgui_freq_sink_x_0, '0']
 - [rational_resampler_xxx_0, '0', qtgui_time_sink_x_0, '0']

@@ -156,7 +156,7 @@ class modulacja_am(gr.top_block, Qt.QWidget):
             (rx_samp_rate//signal_freq*4), #size
             rx_samp_rate, #samp_rate
             'Odbiornik', #name
-            1, #number of inputs
+            2, #number of inputs
             None # parent
         )
         self.qtgui_time_sink_x_0_0.set_update_time(0.10)
@@ -173,7 +173,7 @@ class modulacja_am(gr.top_block, Qt.QWidget):
         self.qtgui_time_sink_x_0_0.enable_stem_plot(False)
 
 
-        labels = ['Signal 1', 'Signal 2', 'Signal 3', 'Signal 4', 'Signal 5',
+        labels = ['si', 'sq', 'si (pll)', 'sq (pll)', 'Signal 5',
             'Signal 6', 'Signal 7', 'Signal 8', 'Signal 9', 'Signal 10']
         widths = [1, 1, 1, 1, 1,
             1, 1, 1, 1, 1]
@@ -187,7 +187,7 @@ class modulacja_am(gr.top_block, Qt.QWidget):
             -1, -1, -1, -1, -1]
 
 
-        for i in range(2):
+        for i in range(4):
             if len(labels[i]) == 0:
                 if (i % 2 == 0):
                     self.qtgui_time_sink_x_0_0.set_line_label(i, "Re{{Data {0}}}".format(i/2))
@@ -264,7 +264,7 @@ class modulacja_am(gr.top_block, Qt.QWidget):
             self.top_grid_layout.setColumnStretch(c, 1)
         self.qtgui_freq_sink_x_0_0 = qtgui.freq_sink_c(
             8192, #size
-            window.WIN_BLACKMAN_hARRIS, #wintype
+            window.WIN_HAMMING, #wintype
             tx_freq, #fc
             rx_samp_rate, #bw
             "", #name
@@ -284,11 +284,11 @@ class modulacja_am(gr.top_block, Qt.QWidget):
 
 
 
-        labels = ['', '', '', '', '',
+        labels = ['Sygnał analityczny (sq + j*si)', 'si', 'j*sq', '', '',
             '', '', '', '', '']
         widths = [1, 1, 1, 1, 1,
             1, 1, 1, 1, 1]
-        colors = ["blue", "red", "green", "black", "cyan",
+        colors = ["blue", "green", "red", "black", "cyan",
             "magenta", "yellow", "dark red", "dark green", "dark blue"]
         alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
             1.0, 1.0, 1.0, 1.0, 1.0]
@@ -374,15 +374,18 @@ class modulacja_am(gr.top_block, Qt.QWidget):
         self.blocks_float_to_complex_0 = blocks.float_to_complex(1)
         self.blocks_complex_to_float_0 = blocks.complex_to_float(1)
         self.analog_sig_source_x_0 = analog.sig_source_c(signal_samp_rate, analog.GR_TRI_WAVE, signal_freq, 1, 0, 0)
+        self.analog_pll_carriertracking_cc_0 = analog.pll_carriertracking_cc(0.06, 0.6, (-0.6))
 
 
         ##################################################
         # Connections
         ##################################################
+        self.connect((self.analog_pll_carriertracking_cc_0, 0), (self.qtgui_time_sink_x_0_0, 1))
         self.connect((self.analog_sig_source_x_0, 0), (self.blocks_complex_to_float_0, 0))
         self.connect((self.blocks_complex_to_float_0, 0), (self.blocks_float_to_complex_0, 0))
         self.connect((self.blocks_float_to_complex_0, 0), (self.rational_resampler_xxx_0, 0))
         self.connect((self.blocks_multiply_const_vxx_0, 0), (self.channels_channel_model_0, 0))
+        self.connect((self.blocks_selector_0, 0), (self.analog_pll_carriertracking_cc_0, 0))
         self.connect((self.blocks_selector_0, 0), (self.qtgui_freq_sink_x_0_0, 0))
         self.connect((self.blocks_selector_0, 0), (self.qtgui_time_sink_x_0_0, 0))
         self.connect((self.channels_channel_model_0, 0), (self.blocks_selector_0, 0))
